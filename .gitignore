@@ -1,0 +1,54 @@
+# ===================================================================
+# ## Standard .gitignore file for Visual Studio/C#/.NET projects ##
+# ===================================================================
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# Visual Studio temporary files
+.vs/
+TestResults/
+.history
+
+# Rider temporary files
+.idea/
+
+# Roslyn files
+.roslyn/
+
+# Mac/Linux files
+.DS_Store
+._*
+
+# Other
+*.dbmdl
+*_i.c
+*_p.c
+*.ncb
+*.pch
+*.tmp
+*.temp
+*.tmp_proj
+*.cache
+*.bak
+*.log
+*~
+*.swp
