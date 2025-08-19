@@ -52,3 +52,6 @@ TestResults/
 *.log
 *~
 *.swp
+
+appsettings.json
+appsettings.Development.json

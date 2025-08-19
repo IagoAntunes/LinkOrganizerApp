@@ -37,7 +37,13 @@ namespace Sitemark.Infrastructure.Repositories
                     }
                 }
             }
-            return Result<string>.Failure();
+
+            return Result<string>.Failure(
+                new Error(
+                    "error-login",
+                    ""
+                )    
+            );
         }
 
         public async Task<Result> Register(AuthRegisterDto registerDto)
@@ -53,18 +59,28 @@ namespace Sitemark.Infrastructure.Repositories
                 if (registerDto.Roles != null && registerDto.Roles.Any())
                 {
                     identityResult = await userManager.AddToRolesAsync(identityUser, registerDto.Roles);
-                    if (!identityResult.Succeeded)
+                    if (identityResult.Succeeded)
                     {
-                        var error = new Error(
-                            "Auth.Register.RolesFailed",
-                            string.Join("\n", identityResult.Errors.Select(e => e.Description))
-                        );
-
-                        return Result.Failure(error);
+                        return Result.Success();
                     }
+                    else
+                    {
+                        return Result.Failure(
+                            new Error(
+                                "Auth.Register.RolesFailed",
+                                string.Join("\n", identityResult.Errors.Select(e => e.Description))
+                            )
+                        );
+                    }
+
+
                 }
             }
-            return Result.Success();
+            return Result.Failure(
+                new Error(
+                "error-register",
+                ""
+            ));
         }
     }
 }
