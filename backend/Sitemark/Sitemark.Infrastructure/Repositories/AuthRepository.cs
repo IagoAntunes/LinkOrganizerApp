@@ -50,7 +50,7 @@ namespace Sitemark.Infrastructure.Repositories
         {
             var identityUser = new IdentityUser
             {
-                UserName = registerDto.Email,
+                UserName = registerDto.Name,
                 Email = registerDto.Email
             };
             var identityResult = await userManager.CreateAsync(identityUser, registerDto.Password);

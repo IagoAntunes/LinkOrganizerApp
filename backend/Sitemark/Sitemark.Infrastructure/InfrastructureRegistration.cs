@@ -24,6 +24,10 @@ namespace Sitemark.Infrastructure
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ILinkService, LinkService>();
+            services.AddScoped<ILinkRepository, LinkRepository>();
+            services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IImageRepository, ImageRepository>();
 
 
             services.AddDbContext<SitemarkDbContext>(
@@ -46,6 +50,8 @@ namespace Sitemark.Infrastructure
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 6;
             });
+
+
 
             services.AddDataProtection();
 

@@ -10,6 +10,7 @@ namespace Sitemark.API.Mapping
         {
             CreateMap<AuthRegisterRequest, AuthRegisterDto>();
             CreateMap<AuthLoginRequest, AuthLoginDto>();
+            CreateMap<LinkCreateRequest, LinkCreateDto>();
         }
     }
 }

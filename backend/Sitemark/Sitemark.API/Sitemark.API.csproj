@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sitemark.Application\Sitemark.Application.csproj" />
+    <ProjectReference Include="..\Sitemark.Domain\Sitemark.Domain.csproj" />
     <ProjectReference Include="..\Sitemark.Infrastructure\Sitemark.Infrastructure.csproj" />
   </ItemGroup>
 

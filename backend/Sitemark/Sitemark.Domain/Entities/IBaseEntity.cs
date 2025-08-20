@@ -15,7 +15,7 @@ namespace Sitemark.Domain.Entities
         /// <summary>
         /// Chave primária única da entidade.
         /// </summary>
-        public Guid Id { get; protected set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// Data e hora em que a entidade foi criada (em UTC).
