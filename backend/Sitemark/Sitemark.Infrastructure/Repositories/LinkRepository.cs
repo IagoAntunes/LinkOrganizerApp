@@ -28,9 +28,10 @@ namespace Sitemark.Infrastructure.Repositories
             return Result.Success(result.Entity);
         }
 
-        public async Task<Result<List<LinkEntity>>> GetLinksAsync()
+        public async Task<Result<List<LinkEntity>>> GetLinksAsync(Guid userId)
         {
             var links = await dbContext.Links
+                .Where(link => link.UserId == userId.ToString())
                 .Include(link => link.User)
                 .ToListAsync();
 

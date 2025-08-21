@@ -1,14 +1,18 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Metrics;
+using Prometheus;
 using Sitemark.API.Mapping;
 using Sitemark.API.Validators;
 using Sitemark.Application;
 using Sitemark.Domain.Mapping;
 using Sitemark.Infrastructure;
+using Sitemark.Infrastructure.Data;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -52,11 +56,25 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 
-    // Adiciona essa linha para resolver o erro do Swagger com o FromForm.
-    // Isso instrui o Swagger a inferir os parâmetros do corpo da requisição
-    // para APIs que usam [FromForm].
     options.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 });
+
+builder.Services.AddOpenTelemetry()
+    .WithMetrics(builder =>
+    {
+        builder.AddPrometheusExporter(); 
+
+        builder.AddAspNetCoreInstrumentation();
+        builder.AddHttpClientInstrumentation();
+        builder.AddRuntimeInstrumentation();
+    });
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "Sitemark_";
+});
+
 
 builder.Services.AddFluentValidationAutoValidation()
     .AddFluentValidationClientsideAdapters()
@@ -83,19 +101,40 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
-
+app.UseHttpMetrics();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<SitemarkDbContext>();
+
+        context.Database.Migrate();
+
+        Console.WriteLine("Migrações do banco de dados aplicadas com sucesso!");
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações do banco de dados.");
+    }
+}
+
 app.UseHttpsRedirection();
+app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapMetrics();
+app.MapPrometheusScrapingEndpoint();
 
 app.UseStaticFiles(new StaticFileOptions
 {

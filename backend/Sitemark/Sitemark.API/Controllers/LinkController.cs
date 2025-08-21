@@ -29,7 +29,9 @@ namespace Sitemark.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var getLinksResult = await linkService.GetLinksAsync();
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var getLinksResult = await linkService.GetLinksAsync(userId);
             if (getLinksResult.IsSuccess)
             {
                 return Ok(getLinksResult.Value);

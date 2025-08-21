@@ -6,7 +6,7 @@ namespace Sitemark.Domain.Repositories
     public interface ILinkRepository
     {
         Task<Result<LinkEntity>> CreateLinkAsync(LinkEntity link);
-        Task<Result<List<LinkEntity>>> GetLinksAsync();
+        Task<Result<List<LinkEntity>>> GetLinksAsync(Guid userId);
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36401.2 d17.14
+VisualStudioVersion = 17.14.36401.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitemark.API", "Sitemark.API\Sitemark.API.csproj", "{01B3FF7C-58A4-45D4-9128-D3781C84F93E}"
 EndProject
@@ -10,6 +10,21 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitemark.Infrastructure", "Sitemark.Infrastructure\Sitemark.Infrastructure.csproj", "{CE9D3C34-68C1-4E24-BA3F-044F6EF1ECC3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitemark.Application", "Sitemark.Application\Sitemark.Application.csproj", "{8875A6F9-BF7E-4C68-872E-AC1DC4979E5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.env = .env
+		docker-compose.yml = docker-compose.yml
+		Dockerfile.dockerfile = Dockerfile.dockerfile
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "monitoring", "monitoring", "{5595A5C6-C3F6-41F9-9076-F1DB641228ED}"
+	ProjectSection(SolutionItems) = preProject
+		prometheus.yml = prometheus.yml
+		local-config.yml = local-config.yml
+		promtail-config.yml = promtail-config.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

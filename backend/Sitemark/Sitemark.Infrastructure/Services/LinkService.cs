@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Caching.Distributed;
 using Sitemark.Application.Services;
 using Sitemark.Domain.Dtos;
 using Sitemark.Domain.Entities;
@@ -7,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Sitemark.Infrastructure.Services
@@ -16,16 +18,19 @@ namespace Sitemark.Infrastructure.Services
         private readonly IImageService imageService;
         private readonly ILinkRepository linkRepository;
         private readonly IMapper mapper;
+        private readonly IDistributedCache _cache;
 
         public LinkService(
             IImageService imageService,
             ILinkRepository linkRepository,
-            IMapper mapper
+            IMapper mapper,
+            IDistributedCache cache
             )
         {
             this.imageService = imageService;
             this.linkRepository = linkRepository;
             this.mapper = mapper;
+            this._cache = cache;
         }
 
         public async Task<Result<CreateLinkResponseDto>> CreateLinkAsync(LinkCreateDto linkCreateDto, Guid userId)
@@ -40,6 +45,8 @@ namespace Sitemark.Infrastructure.Services
 
             if(createLinkResult.IsSuccess)
             {
+                string cacheKey = GetUserLinksCacheKey(userId);
+                await _cache.RemoveAsync(cacheKey);
                 var linkDto = mapper.Map<CreateLinkResponseDto>(createLinkResult.Value);
                 return Result.Success(linkDto);
             }
@@ -49,12 +56,36 @@ namespace Sitemark.Infrastructure.Services
             }
         }
 
-        public async Task<Result<ICollection<LinkDto>>> GetLinksAsync()
+        private string GetUserLinksCacheKey(Guid userId)
         {
-            var getLinksResult = await linkRepository.GetLinksAsync();
+            return $"links:user:{userId}";
+        }
+
+
+        public async Task<Result<ICollection<LinkDto>>> GetLinksAsync(Guid userId)
+        {
+            string cacheKey = GetUserLinksCacheKey(userId);
+            string cachedLinksJson = await _cache.GetStringAsync(cacheKey);
+
+            if (!string.IsNullOrEmpty(cachedLinksJson))
+            {
+                var linksCached = JsonSerializer.Deserialize<ICollection<LinkDto>>(cachedLinksJson);
+                return Result.Success(linksCached);
+            }
+
+            var getLinksResult = await linkRepository.GetLinksAsync(userId);
+
             if (getLinksResult.IsSuccess)
             {
                 var linkDtos = mapper.Map<ICollection<LinkDto>>(getLinksResult.Value);
+
+                var options = new DistributedCacheEntryOptions()
+                                .SetSlidingExpiration(TimeSpan.FromMinutes(5)) 
+                                .SetAbsoluteExpiration(TimeSpan.FromHours(1));
+
+                var linksToCacheJson = JsonSerializer.Serialize(linkDtos);
+                await _cache.SetStringAsync(cacheKey, linksToCacheJson, options);
+
                 return Result.Success(linkDtos);
             }
             else

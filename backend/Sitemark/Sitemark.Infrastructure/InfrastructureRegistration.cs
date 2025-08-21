@@ -32,7 +32,7 @@ namespace Sitemark.Infrastructure
 
             services.AddDbContext<SitemarkDbContext>(
                     options => options.UseSqlServer(
-                    configuration.GetConnectionString("SitemarkConnectionString")
+                    configuration.GetConnectionString("DefaultConnection")
                 )
             );
 

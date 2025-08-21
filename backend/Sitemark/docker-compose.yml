@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+  
+  #API
+  sitemark-api:
+    container_name: sitemark-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=sitemark-db;Database=SitemarkDb;User Id=sa;Password=${DB_PASSWORD};TrustServerCertificate=True;
+      - ConnectionStrings__Redis=sitemark-redis:6379
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - JWT__Issuer=https://localhost:7132
+      - JWT__Audience=https://localhost:7132
+      - JWT__key=jP4kY9sN+ZfA8wBvE1cG2hJ6mR7tU3xY5zD0lK4vO7qF+gH1iS9lO3pC8uN5rV6wB7kM/iG1eR2tJ/oP4aZ3xY=
+    depends_on:
+      - sitemark-db
+      - sitemark-redis
+    volumes: 
+      - ./images-data:/app/Images
+
+  #DB
+  sitemark-db:
+    container_name: sitemark-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - sitemark-db-data:/var/opt/mssql
+
+  #Redis
+  sitemark-redis:
+    container_name: sitemark-redis
+    image: redis:latest
+    ports:
+        - "6379:6379"
+
+  #Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+        - ./monitoring:/etc/prometheus/
+    ports:
+        - "9090:9090"
+    command: --config.file=/etc/prometheus/prometheus.yml
+    depends_on:
+        - sitemark-api
+
+  #Loki
+  loki:
+    image: grafana/loki:latest
+    command: -config.file=/etc/loki/local-config.yaml 
+    ports:
+        - "3100:3100" 
+    volumes:
+        - ./monitoring:/etc/loki/ 
+
+  #Promtail
+  promtail:
+    image: grafana/promtail:latest
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - ./monitoring:/etc/promtail/
+    command: -config.file=/etc/promtail/config.yml
+    depends_on:
+        - loki
+  
+  #Grafana
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+        - "3000:3000" 
+    volumes:
+        - grafana-data:/var/lib/grafana
+    depends_on:
+        - prometheus
+        - loki
+    environment:
+        - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+
+volumes:
+  sitemark-db-data:
+  grafana-data:  
