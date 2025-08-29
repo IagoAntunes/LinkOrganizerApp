@@ -1,0 +1,65 @@
+@import '../../styles/tokens.scss';
+
+.cbutton {
+    display: inline-flex;       
+    align-items: center;         
+    justify-content: center;  
+    background: #ed712e;
+    color: #000;
+    border: none;
+    border-radius: 40px;
+    padding: 12px 41px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    outline: none;
+    min-width: 120px;
+
+    &:hover:not(:disabled) {
+        background: #ff893e;
+        box-shadow: 0 2px 8px #ed712e44;
+    }
+
+    &:active:not(:disabled) {
+        background: #d75f1e;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &.full-width {
+        width: 100%;
+        display: block;
+    }
+
+    .cbutton-icon {
+        display: inline-flex;
+        align-items: center;
+        margin-right: 8px;
+    }
+    
+    .cbutton-label {
+        align-items: center;
+    }
+
+    &.secondary {
+        background: $background-secondary;
+        color: $accent-orange;
+
+        &:hover:not(:disabled) {
+            background: #444;
+            box-shadow: 0 2px 8px #2225;
+        }
+
+        &:active:not(:disabled) {
+            background: #111;
+        }
+    }
+
+    &.primary {
+        // Você pode deixar vazio ou repetir para clareza
+    }
+}

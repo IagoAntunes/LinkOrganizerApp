@@ -1,0 +1,70 @@
+<div class="login-container">
+    <div class="login-image">
+        <img src="background.svg" alt="">
+    </div>
+    <div class="form-container">
+        <img src="logo.svg" alt="Logo" class="logo-top">
+
+        <div class="login-form">
+
+            @if (isRegister) {
+                <h1>Criar conta</h1>
+            } @else {
+                <h1>Acessar conta</h1>
+            }
+
+            <ng-container *ngIf="isRegister">
+                <div>
+                    <h3>Nome</h3>
+                    <app-cinput
+                    [placeholder]="'Digite seu nome'"
+                    [type]="'text'"
+                    [(ngModel)]="name"
+                ></app-cinput>
+                </div>
+                <div>
+                    <h3>Sobrenome</h3>
+                    <app-cinput
+                    [placeholder]="'Digite seu sobrenome'"
+                    [type]="'text'"
+                    [(ngModel)]="lastName"
+                ></app-cinput>
+                </div>
+            </ng-container>
+
+            <div>
+                <h3>E-mail</h3>
+                <app-cinput
+                    [placeholder]="'Digite seu e-mail'"
+                    [type]="'text'"
+                    [(ngModel)]="email"
+                ></app-cinput>
+            </div>
+            <div>
+                <h3>Senha</h3>
+                <app-cinput
+                    [placeholder]="'Digite sua senha'"
+                    [type]="'password'"
+                    [(ngModel)]="password"
+                ></app-cinput>
+            </div>
+            @if (isRegister) {
+                <app-cbutton [fullWidth]="true" (buttonClick)="register()">Criar conta</app-cbutton>
+            }@else {
+                <app-cbutton *ngIf="!isRegister" [fullWidth]="true" (buttonClick)="login()">Acessar conta</app-cbutton>
+            }
+            
+        </div>
+
+        <p class="login-note">
+            <span *ngIf="!isRegister">
+                Não tem cadastro?
+                <a href="#" (click)="toggleForm(); $event.preventDefault()">Criar conta</a>
+                </span>
+                <span *ngIf="isRegister">
+                Já tem conta?
+                <a href="#" (click)="toggleForm(); $event.preventDefault()">Acessar conta</a>
+            </span>
+        </p>
+    </div>
+</div>

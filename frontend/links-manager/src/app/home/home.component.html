@@ -1,0 +1,104 @@
+<div class="home-container">
+    <img src="logo.svg" alt="">
+    @if (selectedMenu == 0) {
+        <div class="home-row">
+            <div class="home-row-left">
+                <p>Links</p>
+            </div>
+            <div class="home-row-right">
+                <app-cbutton theme="secondary" (buttonClick)="addLink()">
+                    <img icon src="ic_add.svg" alt="">
+                    Adicionar link
+                </app-cbutton>
+            </div>
+        </div>
+
+    <div class="home-list-links">
+        @for (link of links; track $index) {
+            <div class="link-item">
+                <div class="link-index">{{$index + 1}}</div>
+                <img class="link-img" src="mock_img_link.png" alt="">
+                <div class="link-main">
+                    <div class="link-title-row">
+                        <span class="link-title">{{link.name}}</span>
+                        <span class="link-chip">{{link.platform}}</span>
+                    </div>
+                    <div class="link-url">{{link.url}}</div>
+                </div>
+                <span class="link-delete">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" (click)="deleteLink(link.id)">
+                        <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 6H15.375M15.375 6V4C15.375 2.89543 14.4796 2 13.375 2H10.625C9.52043 2 8.625 2.89543 8.625 4V6M15.375 6H8.625M3 6H8.625" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            </div>
+        }
+    </div>
+    }
+    @else if(selectedMenu == 1){
+        <div class="home-user">
+            <div class="home-user-row">
+                <p>Perfil</p>
+            </div>
+            <div class="home-user-form-row">
+                <div class="form-left">
+                    <h3>Nome</h3>
+                    <app-cinput placeholder="Nome" [disabled]="true"></app-cinput>
+                    <h3>LastName</h3>
+                    <app-cinput placeholder="LastName" [disabled]="true"></app-cinput>
+                    <h3>Email</h3>
+                    <app-cinput placeholder="Email" [disabled]="true"></app-cinput>
+                </div>
+                <div class="form-right">
+                    <img src="mock_user_prof.png" alt="">
+                    <p>Substituir imagem</p>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="home-menus">
+        <span
+            class="icon"
+            [class.selected]="selectedMenu === 0"
+            (click)="changeMenu(0)"
+        >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 6H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 6.00989L4.01 5.99878" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 12.0099L4.01 11.9988" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M4 18.0099L4.01 17.9988" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 12H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 18H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+    </span>
+        <span
+            class="icon"
+            [class.selected]="selectedMenu === 1"
+            (click)="changeMenu(1)"
+        >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_5126_447)">
+            <path d="M8.00016 1.33331C4.31826 1.33331 1.3335 4.31808 1.3335 7.99998C1.3335 11.6818 4.31826 14.6666 8.00016 14.6666C11.682 14.6666 14.6668 11.6818 14.6668 7.99998C14.6668 4.31808 11.682 1.33331 8.00016 1.33331Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2.84717 12.2304C2.84717 12.2304 4.33318 10.3333 7.99983 10.3333C11.6665 10.3333 13.1526 12.2304 13.1526 12.2304" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 8C9.1046 8 10 7.1046 10 6C10 4.89543 9.1046 4 8 4C6.8954 4 6 4.89543 6 6C6 7.1046 6.8954 8 8 8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+            <clipPath id="clip0_5126_447">
+            <rect width="16" height="16" fill="currentColor"/>
+            </clipPath>
+            </defs>
+            </svg>
+        </span>
+        <span
+            class="icon"
+            [class.selected]="selectedMenu === 2"
+            (click)="changeMenu(2)"
+        >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 8H12.6667M12.6667 8L10.6667 10M12.6667 8L10.6667 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12.6668 4V3.33333C12.6668 2.59695 12.0699 2 11.3335 2H4.66683C3.93045 2 3.3335 2.59695 3.3335 3.33333V12.6667C3.3335 13.4031 3.93045 14 4.66683 14H11.3335C12.0699 14 12.6668 13.4031 12.6668 12.6667V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </span>
+    </div>
+</div>

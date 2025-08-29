@@ -22,6 +22,17 @@ builder.Services.AddControllers()
     {
         options.SuppressModelStateInvalidFilter = false;
     });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:4200")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -125,7 +136,7 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações do banco de dados.");
     }
 }
-
+app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
 app.UseRouting();
 

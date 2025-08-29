@@ -4,11 +4,9 @@ public sealed record Error(string Code, string Message)
 {
     public static readonly Error None = new(string.Empty, string.Empty);
 }
-// Local: .Domain/Primitives/Result.cs
 
 public class Result
 {
-    // Construtor continua protegido
     protected internal Result(bool isSuccess, Error error)
     {
         if (isSuccess && error != Error.None ||
