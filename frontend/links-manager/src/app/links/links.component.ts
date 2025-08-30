@@ -36,7 +36,9 @@ export class LinksComponent {
   private readonly snackbarService = inject(SnackbarService);
 
   ngOnInit(){
-    this._getLinks();
+    if(this.links.length == 0){
+      this._getLinks();
+    }
   }
 
   private _getLinks(){

@@ -1,11 +1,7 @@
 <div class="home-container">
     <img src="logo.svg" alt="">
-    @if (selectedMenu == 0) {
-        <app-links></app-links>
-    }
-    @else if(selectedMenu == 1){
-        <app-profile></app-profile>
-    }
+    <app-links [hidden]="selectedMenu !== 0" ></app-links>
+    <app-profile [hidden]="selectedMenu !== 1"></app-profile>
     <div class="home-menus">
         <span
             class="icon"
