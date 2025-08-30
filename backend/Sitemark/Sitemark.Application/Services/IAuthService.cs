@@ -7,5 +7,6 @@ namespace Sitemark.Application.Services
     {
         Task<Result<string>> Login(AuthLoginDto loginDto);
         Task<Result> Register(AuthRegisterDto registerDto);
+        Task<Result<UserDto>> GetUserInfo(Guid uerId);
     }
 }

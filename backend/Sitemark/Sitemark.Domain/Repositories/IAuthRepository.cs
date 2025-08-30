@@ -1,4 +1,5 @@
-﻿using Sitemark.Domain.Dtos;
+﻿using Microsoft.AspNetCore.Identity;
+using Sitemark.Domain.Dtos;
 using Sitemark.Domain.Entities;
 
 namespace Sitemark.Domain.Repositories
@@ -7,5 +8,6 @@ namespace Sitemark.Domain.Repositories
     {
         Task<Result<string>> Login(AuthLoginDto loginDto);
         Task<Result> Register(AuthRegisterDto registerDto);
+        Task<Result<IdentityUser>> GetUserInfo(Guid userId);
     }
 }

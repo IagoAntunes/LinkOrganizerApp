@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Rewrite;
 using Sitemark.Domain.Dtos;
-using Sitemark.Domain.Entities;
 using Sitemark.Domain.Repositories;
 using System.Data;
 
@@ -19,6 +17,21 @@ namespace Sitemark.Infrastructure.Repositories
         {
             this.userManager = userManager;
             this.tokenRepository = tokenRepository;
+        }
+
+        public async Task<Result<IdentityUser>> GetUserInfo(Guid userId)
+        {
+            var user = await userManager.FindByIdAsync(userId.ToString());
+            if(user != null)
+            {
+                return Result<IdentityUser>.Success(user);
+            }
+            return Result<IdentityUser>.Failure(
+                new Error(
+                    "error-user-not-found",
+                    ""
+                )
+            );
         }
 
         public async Task<Result<string>> Login(AuthLoginDto loginDto)
@@ -51,7 +64,7 @@ namespace Sitemark.Infrastructure.Repositories
             var identityUser = new IdentityUser
             {
                 UserName = registerDto.Name,
-                Email = registerDto.Email
+                Email = registerDto.Email,
             };
             var identityResult = await userManager.CreateAsync(identityUser, registerDto.Password);
             if (identityResult.Succeeded)

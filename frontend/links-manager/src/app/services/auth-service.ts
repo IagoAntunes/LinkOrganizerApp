@@ -37,8 +37,10 @@ export class AuthService {
     );
   }
 
-  getUserData(){
-    //
+  getUserData() : Observable<any>{
+    return this.http.get(`${this.apiUrl}/UserInfo`).pipe(
+      catchError(err => throwError(() => err))
+    );
   }
 
   setToken(token: string) {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sitemark.API.Dtos.Requests;
 using Sitemark.Application.Services;
 using Sitemark.Domain.Dtos;
+using System.Security.Claims;
 
 namespace Sitemark.API.Controllers
 {
@@ -51,6 +52,22 @@ namespace Sitemark.API.Controllers
             else
             {
                 return Unauthorized();
+            }
+        }
+
+        [HttpGet("/UserInfo")]
+        public async Task<IActionResult> GetUserInfo()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var result = await authSevice.GetUserInfo(userId);
+            if (result.IsSuccess && result.Value != null)
+            {
+                var userDto = mapper.Map<UserDto>(result.Value);
+                return Ok(userDto);
+            }
+            else
+            {
+                return NotFound();
             }
         }
 
