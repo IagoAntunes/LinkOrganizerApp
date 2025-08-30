@@ -136,10 +136,10 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Ocorreu um erro ao aplicar as migrações do banco de dados.");
     }
 }
-app.UseCors("AllowSpecificOrigin");
+
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseCors("AllowSpecificOrigin");
 app.UseAuthentication();
 app.UseAuthorization();
 

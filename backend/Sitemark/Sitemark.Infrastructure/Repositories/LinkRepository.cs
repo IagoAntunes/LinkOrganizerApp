@@ -28,6 +28,18 @@ namespace Sitemark.Infrastructure.Repositories
             return Result.Success(result.Entity);
         }
 
+        public async Task<Result<LinkEntity>> DeleteLinkAsync(Guid linkId)
+        {
+            var linkToDelete = await dbContext.Links.FirstOrDefaultAsync(link => link.Id == linkId);
+            if(linkToDelete == null)
+            {
+                return Result.Failure<LinkEntity>(new Error("LinkNotFound", "Link not found."));
+            }
+            dbContext.Links.Remove(linkToDelete);
+            await dbContext.SaveChangesAsync();
+            return Result.Success(linkToDelete);
+        }
+
         public async Task<Result<List<LinkEntity>>> GetLinksAsync(Guid userId)
         {
             var links = await dbContext.Links

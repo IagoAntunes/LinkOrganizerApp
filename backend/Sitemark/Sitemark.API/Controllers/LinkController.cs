@@ -62,5 +62,19 @@ namespace Sitemark.API.Controllers
 
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete([FromRoute ] Guid id)
+        {
+            var deleteLinkResult = await linkService.DeleteLinkAsync(id);
+            if (deleteLinkResult.IsSuccess)
+            {
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest(deleteLinkResult.Error);
+            }
+        }
+
     }
 }

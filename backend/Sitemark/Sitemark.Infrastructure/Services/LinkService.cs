@@ -93,5 +93,24 @@ namespace Sitemark.Infrastructure.Services
                 return Result.Failure<ICollection<LinkDto>>(getLinksResult.Error);
             }
         }
+
+        public async Task<Result<LinkDto>> DeleteLinkAsync(Guid linkId)
+        {
+            var result = await linkRepository.DeleteLinkAsync(linkId);
+
+            if (result.IsSuccess)
+            {
+                var linkDto = mapper.Map<LinkDto>(result.Value);
+                string cacheKey = GetUserLinksCacheKey(Guid.Parse(result.Value.UserId));
+                await _cache.RemoveAsync(cacheKey);
+                return Result.Success(linkDto);
+
+            }
+            else
+            {
+                return Result.Failure<LinkDto>(result.Error);
+            }
+
+        }
     }
 }

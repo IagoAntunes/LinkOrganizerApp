@@ -34,7 +34,8 @@ namespace Sitemark.Infrastructure.Data
                 entity.HasOne(link => link.Image)
                       .WithMany() 
                       .HasForeignKey(link => link.ImageId)
-                      .IsRequired(false); 
+                      .IsRequired(false)
+                      .OnDelete(DeleteBehavior.Cascade); 
             });
 
             var userRoleId = "fab4fac1-c546-41de-aebc-a14da6895711";
