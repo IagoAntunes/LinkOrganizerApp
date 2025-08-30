@@ -1,0 +1,48 @@
+<div>
+    <div class="home-row">
+        <div class="home-row-left">
+            <p>Links</p>
+        </div>
+        <div class="home-row-right">
+            <app-cbutton theme="secondary" (buttonClick)="openCreateLinkDialog()">
+                <img icon src="ic_add.svg" alt="">
+                Adicionar link
+            </app-cbutton>
+        </div>
+    </div>
+
+    @if (showCreateLinkDialog) {
+        <app-add-link-dialog
+                (closeDialog)="onDialogClose()"
+                (linkCreated)="onLinkCreated($event)">
+        </app-add-link-dialog>
+    }
+    <div class="home-list-links">
+
+        @for (link of links; track $index) {
+            <div class="link-item">
+                <div class="link-index">{{$index + 1}}</div>
+                <img class="link-img" src={{link.imageUrl}} alt="">
+                <div class="link-main">
+                    <div class="link-title-row">
+                        <span class="link-title">{{link.name}}</span>
+                        <span class="link-chip"
+                            [ngClass]="getPlatformClass(link.platform)">
+                                {{link.platform}}
+                        </span>
+                    </div>
+                    <div class="link-url">{{link.url}}</div>
+                </div>
+                <span class="link-delete">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" (click)="onDeleteLink(link.id)">
+                        <path d="M20 9L18.005 20.3463C17.8369 21.3026 17.0062 22 16.0353 22H7.96474C6.99379 22 6.1631 21.3026 5.99496 20.3463L4 9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M21 6H15.375M15.375 6V4C15.375 2.89543 14.4796 2 13.375 2H10.625C9.52043 2 8.625 2.89543 8.625 4V6M15.375 6H8.625M3 6H8.625" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            </div>
+
+        }
+    </div>
+
+    
+</div>
