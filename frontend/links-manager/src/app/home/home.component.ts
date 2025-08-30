@@ -1,18 +1,17 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../services/auth-service';
 import { Router } from '@angular/router';
-import { CinputComponent } from "../components/cinput/cinput.component";
 import { CommonModule } from '@angular/common';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { SnackbarService } from '../services/snackbar.service';
 import { LinksComponent } from "../links/links.component";
+import { ProfileComponent } from "../profile/profile.component";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   standalone: true,
-  imports: [CinputComponent, CommonModule, MatSnackBarModule, LinksComponent]
+  imports: [CommonModule, MatSnackBarModule, LinksComponent, ProfileComponent]
 })
 export class HomeComponent {
   private readonly authService = inject(AuthService);
