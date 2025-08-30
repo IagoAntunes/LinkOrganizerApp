@@ -67,7 +67,7 @@ export class LoginComponent {
       lastName: this.lastName,
       email: this.email,
       password: this.password,
-      roles: ['user']
+      roles: ['Writer','Reader']
     }
     this.authService.register(request).subscribe(
       {

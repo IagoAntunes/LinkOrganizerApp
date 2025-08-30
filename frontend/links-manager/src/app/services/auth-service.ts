@@ -19,7 +19,7 @@ export interface RegisterRequest{
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:7018'; 
+  private apiUrl = 'http://localhost:8000'; 
   private readonly TOKEN_KEY = 'auth_token';
 
   private readonly http = inject(HttpClient);

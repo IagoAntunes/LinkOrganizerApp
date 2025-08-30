@@ -94,14 +94,21 @@
 }
 
 .link-chip {
-    background: $accent-orange;
+    background: #ffae5d; 
     color: $background-secondary;
     font-size: 0.85rem;
     border-radius: 12px;
     padding: 2px 10px;
     font-weight: 500;
     white-space: nowrap;
+    transition: background 0.2s;
 }
+
+.chip-prime   { background: $accent-blue;   color: #fff; }
+.chip-max     { background: $accent-purple;   color: #fff; }
+.chip-netflix { background: #e50914;   color: #fff; } 
+.chip-disney  { background: $accent-green;   color: #fff; } 
+.chip-default { background: #ffae5d;   color: $background-secondary; }
 
 .link-url {
     color: #666;

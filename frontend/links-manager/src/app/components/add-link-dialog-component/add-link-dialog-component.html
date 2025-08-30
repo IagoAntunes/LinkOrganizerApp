@@ -1,0 +1,36 @@
+<div class="dialog-backdrop" (click)="onBackdrop($event)">
+    <div class="dialog-content" (click)="$event.stopPropagation()">
+        <h2>Adicionar Link</h2>
+        <div class="dialog-c-row">
+            <form (ngSubmit)="createLink()" class="dialog-form">
+                <div class="title-platform-row">
+                    <h3>Título do link</h3>
+                    <app-cinput type="text" placeholder="Digite o nome do conteúdo" [(ngModel)]="name" name="name" required />
+                    <h3>Plataforma de streaming</h3>
+                    <app-cinput type="text" placeholder="Onde você está assistindo?" [(ngModel)]="platform" name="platform" required />
+                </div>
+                <h3>URL</h3>
+                <app-cinput type="text" placeholder="Cole a URL do conteúdo" [(ngModel)]="url" name="url" required />
+
+                <div class="dialog-actions">
+                    <app-cbutton [theme]="'secondary'" (click)="close()" type="button">Voltar</app-cbutton>
+                    <app-cbutton type="submit" [disabled]="!name || !platform || !url || !selectedFile" >Salvar</app-cbutton>
+                </div>
+            </form>
+            <div class="upload-image">
+                @if (previewUrl) {
+                    <div *ngIf="previewUrl" class="image-preview">
+                        <img [src]="previewUrl" alt="Prévia da imagem"/>
+                    </div>
+                }@else {
+                    <label for="file-upload" class="upload-label">
+                        <div class="upload-box">
+                            <span>Imagem</span>
+                        </div>
+                        <input id="file-upload" type="file" (change)="onImageSelected($event)" accept="image/*" hidden/>
+                    </label>
+                }
+            </div>
+        </div>
+    </div>
+</div>
